@@ -1,0 +1,54 @@
+summary: Delete Posts
+authn: false
+tasks:
+  - id: fetch_user_post
+    fn: com.gs.datastore
+    args:
+      datasource: postgres
+      data:
+        where:
+          id: <%parseInt(inputs.params.id)%>
+      config:
+        method: Posts.findUnique
+
+  - id: if_no_post
+    fn: com.gs.if 
+    condition: <%outputs.fetch_user_post.data==null%>
+    tasks:
+      - id: return_no_post
+        fn: com.gs.return
+        args: "post doesn't exist."
+  
+  - id: identify_user
+    fn: com.gs.else
+    tasks:
+      - id: find_user
+        fn: com.gs.datastore
+        args:
+          datasource: postgres
+          data:
+            where:
+              id: <%outputs.fetch_user_post.data.userId%>
+          config:
+            method: Users.findUnique
+
+  - id: matching_userIds
+    fn: com.gs.if 
+    condition: <%inputs.body.username==outputs.find_user.data.username && inputs.body.password==outputs.find_user.data.password%>
+    tasks:
+      - id: delete_post
+        fn: com.gs.datastore
+        args:
+          datasource: postgres
+          data:
+            where:
+              id: <%parseInt(inputs.params.id)%>
+          config:
+            method: Posts.delete
+   
+  - id: reject
+    fn: com.gs.else
+    tasks:
+      - id: unauth_user 
+        fn: com.gs.return
+        args: "You doesn't have access to delete the post."

@@ -1,0 +1,1 @@
+{"projectName":"assignment","mongodb":false,"postgresql":true,"postgresDbName":"test","kafka":true,"elasticsearch":false,"redis":true,"svcPort":3000,"postgresDbPort":5432,"zookeeperPort":2181,"kafkaPort":9092,"redisPort":6379,"mysql":false}

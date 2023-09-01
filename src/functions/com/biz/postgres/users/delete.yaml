@@ -1,0 +1,12 @@
+summary: Delete Users
+authn: false
+tasks:
+  - id: postgres_users_delete
+    fn: com.gs.datastore
+    args:
+      datasource: postgres
+      data:
+        where:
+          id: <% parseInt(inputs.params.id) %>
+      config:
+        method: Users.delete

@@ -1,0 +1,45 @@
+summary: Fetch Users
+authn: false
+tasks:
+  - id: postgres_users_one
+    fn: com.gs.datastore
+    args:
+      datasource: postgres
+      data:
+        where:
+          id: <% parseInt(inputs.params.id) %>
+      config:
+        method: Users.findUnique
+
+  - id: return_if_user_not_exist
+    fn: com.gs.transform
+    args: |
+          <coffee% if outputs.postgres_users_one.data != null then {
+              code: 200,
+              success: true,
+              data: outputs.postgres_users_one.data,
+              headers: outputs.postgres_users_one.data.headers
+          } else {
+              code: 404,
+              success: false,
+              data: 'User not exist.'
+          } %>
+
+
+  # - id: return_if_user_not_exist
+  #   fn: com.gs.if
+  #   condition: <% outputs.postgres_users_one.data.length==0 %>
+  #   tasks:
+  #     - id: return_empty
+  #       fn: com.gs.return
+  #       args: 'user not exist'
+
+  # - id: return_user
+  #   fn: com.gs.else
+  #   tasks:
+  #     - id: user_data 
+  #       fn: com.gs.transform
+  #       args: <% outputs.postgres_users_one.data %>
+    
+
+

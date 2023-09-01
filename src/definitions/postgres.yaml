@@ -1,0 +1,27 @@
+Users:
+  type: object
+  properties:
+    username:
+      type: string
+    email:
+      type: string
+    password:
+      type: string
+Posts:
+  type: object
+  properties:
+    title:
+      type: string
+    content:
+      type: string
+    userId:
+      type: integer
+Comments:
+  type: object
+  properties:
+    text:
+      type: string
+    userId:
+      type: integer
+    postId:
+      type: integer

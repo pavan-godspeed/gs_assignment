@@ -1,0 +1,20 @@
+summary: Create Users
+authn: false
+tasks:
+  - id: postgres_users_create
+    on_error:
+      continue: false
+      log_attributes:  # You can add specific log attributes when an error happens in a task.
+            error_message: <% outputs.transform_error.message %>
+            error_type: 'Conflict'
+      response:
+        success: false
+        code: 409
+        data: "Username or email already exist. Please use different username or email"
+    fn: com.gs.datastore
+    args:
+      datasource: postgres
+      data:
+        data: <% inputs.body %>
+      config:
+        method: Users.create

@@ -1,0 +1,89 @@
+# ONE
+/postgres/users/:id.http.get:
+  summary: Fetch Users
+  description: Fetch Users from database
+  authn: false
+  fn: com.biz.postgres.users.one
+  params:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    content:
+      application/json:
+        schema:
+          type: object
+
+# CREATE
+/postgres/users.http.post:
+  summary: Create a new Users
+  description: Create Users from database
+  fn: com.biz.postgres.users.create
+  body:
+    content:
+      application/json:
+        schema:
+          $ref: '#/definitions/postgres/Users'
+  responses:
+    content:
+      application/json:
+        schema:
+          type: object
+
+# UPDATE
+/postgres/users/:id.http.put:
+  summary: Update a Users
+  description: Update Users from database
+  fn: com.biz.postgres.users.update
+  body:
+    content:
+      application/json:
+        schema:
+          $ref: '#/definitions/postgres/Users'
+  params:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    content:
+      application/json:
+        schema:
+          type: object
+
+# DELETE
+/postgres/users/:id.http.delete:
+  summary: Delete a Users
+  description: Delete Users from database
+  fn: com.biz.postgres.users.delete
+  params:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    content:
+      application/json:
+        schema:
+          type: object
+
+# SEARCH
+/postgres/users/search.http.post:
+  summary: Fetch multiple Users
+  description: Fetch multiple Users from database
+  authn: false
+  fn: com.biz.postgres.users.search
+  body:
+    content:
+      application/json:
+        schema:
+          type: object
+  responses:
+    content:
+      application/json:
+        schema:
+          type: array

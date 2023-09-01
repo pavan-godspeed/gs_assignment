@@ -1,0 +1,11 @@
+summary: Create Comments
+authn: true
+tasks:
+  - id: postgres_comments_create
+    fn: com.gs.datastore
+    args:
+      datasource: postgres
+      data:
+        data: <% inputs.body %>
+      config:
+        method: Comments.create

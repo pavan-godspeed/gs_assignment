@@ -1,0 +1,117 @@
+# ONE
+/postgres/comments/:id.http.get:
+  summary: Fetch Comments
+  description: Fetch Comments from database
+  authn: false
+  fn: com.biz.postgres.comments.one
+  params:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    content:
+      application/json:
+        schema:
+          type: object
+
+# CREATE
+/postgres/comments.http.post:
+  summary: Create a new Comments
+  description: Create Comments from database
+  fn: com.biz.postgres.comments.create
+  body:
+    content:
+      application/json:
+        schema:
+          $ref: '#/definitions/postgres/Comments'
+  responses:
+    content:
+      application/json:
+        schema:
+          type: object
+
+# UPDATE
+/postgres/comments/:id.http.put:
+  summary: Update a Comments
+  description: Update Comments from database
+  fn: com.biz.postgres.comments.update
+  body:
+    content:
+      application/json:
+        schema:
+          $ref: '#/definitions/postgres/Comments'
+  params:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    content:
+      application/json:
+        schema:
+          type: object
+
+# DELETE
+/postgres/comments/:id.http.delete:
+  summary: Delete a Comments
+  description: Delete Comments from database
+  fn: com.biz.postgres.comments.delete
+  params:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  body:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            username:
+              type: string
+            password:
+              type: string
+  responses:
+    content:
+      application/json:
+        schema:
+          type: object
+
+# SEARCH
+/postgres/comments/search.http.post:
+  summary: Fetch multiple Comments
+  description: Fetch multiple Comments from database
+  authn: false
+  fn: com.biz.postgres.comments.search
+  body:
+    content:
+      application/json:
+        schema:
+          type: object
+  responses:
+    content:
+      application/json:
+        schema:
+          type: array
+
+# MANY
+/postgres/comments/post/:postId.http.get:
+  summary: Fetch all comments on a specific post 
+  description: Fetch all comments related to a particular post from the database
+  authn: false
+  fn: com.biz.postgres.comments.many
+  params:
+    - name: postId
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    content:
+      application/json:
+        schema:
+          type: array

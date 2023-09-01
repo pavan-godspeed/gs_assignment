@@ -1,0 +1,12 @@
+summary: Fetch all Comments on a specific post
+authn: false
+tasks:
+  - id: postgres_comments_many
+    fn: com.gs.datastore
+    args:
+      datasource: postgres
+      data:
+        where:
+          postId: <% parseInt(inputs.params.postId) %>
+      config:
+        method: Comments.findMany

@@ -1,0 +1,13 @@
+summary: Fetch many Users
+authn: false
+tasks:
+  - id: postgres_users_search
+    fn: com.gs.datastore
+    args:
+      datasource: postgres
+      data:
+        include: 
+          posts: true
+          comments: true
+      config:
+        method: Users.findMany

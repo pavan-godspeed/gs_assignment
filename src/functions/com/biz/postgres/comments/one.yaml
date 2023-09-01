@@ -1,0 +1,26 @@
+summary: Fetch Comments
+authn: false
+tasks:
+  - id: postgres_comments_one
+    fn: com.gs.datastore
+    args:
+      datasource: postgres
+      data:
+        where:
+          id: <% parseInt(inputs.params.id) %>
+      config:
+        method: Comments.findUnique
+
+  - id: return_if_comment_not_exist
+    fn: com.gs.transform
+    args: |
+          <coffee% if outputs.postgres_comments_one.data != null then {
+              code: 200,
+              success: true,
+              data: outputs.postgres_comments_one.data,
+              headers: outputs.postgres_comments_one.data.headers
+          } else {
+              code: 404,
+              success: false,
+              data: 'Comment not exist.'
+          } %>

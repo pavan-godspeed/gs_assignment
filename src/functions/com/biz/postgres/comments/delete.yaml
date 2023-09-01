@@ -1,0 +1,54 @@
+summary: Delete Comments
+authn: false
+tasks:
+  - id: fetch_user_comment
+    fn: com.gs.datastore
+    args:
+      datasource: postgres
+      data:
+        where:
+          id: <%parseInt(inputs.params.id)%>
+      config:
+        method: Comments.findUnique
+
+  - id: if_no_comments
+    fn: com.gs.if 
+    condition: <%outputs.fetch_user_comment.data==null%>
+    tasks:
+      - id: return_no_comment
+        fn: com.gs.return
+        args: "comment doesn't exist."
+  
+  - id: identify_user
+    fn: com.gs.else
+    tasks:
+      - id: find_user
+        fn: com.gs.datastore
+        args:
+          datasource: postgres
+          data:
+            where:
+              id: <%outputs.fetch_user_comment.data.userId%>
+          config:
+            method: Users.findUnique
+
+  - id: matching_userIds
+    fn: com.gs.if 
+    condition: <%inputs.body.username==outputs.find_user.data.username && inputs.body.password==outputs.find_user.data.password%>
+    tasks:
+      - id: delete_comment
+        fn: com.gs.datastore
+        args:
+          datasource: postgres
+          data:
+            where:
+              id: <%parseInt(inputs.params.id)%>
+          config:
+            method: Comments.delete
+   
+  - id: reject
+    fn: com.gs.else
+    tasks:
+      - id: unauth_user 
+        fn: com.gs.return
+        args: "You doesn't have access to delete the comment."

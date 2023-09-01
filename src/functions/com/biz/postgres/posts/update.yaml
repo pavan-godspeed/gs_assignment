@@ -1,0 +1,46 @@
+summary: Update Posts
+authn: false
+tasks:
+  - id: postgres_post_fetch
+    fn: com.gs.datastore
+    args:
+      datasource: postgres
+      data:
+        where:
+          id: <% parseInt(inputs.params.id) %>
+      config:
+        method: Posts.findUnique
+
+  - id: if_post_not_found
+    fn: com.gs.if
+    condition: <% outputs.postgres_post_fetch.data == null %>
+    tasks:
+      - id: task1
+        fn: com.gs.return
+        args: 'Post not exist.'
+
+  - id: if_auth_user
+    fn: com.gs.elif
+    condition: <% inputs.body.userId == outputs.postgres_post_fetch.data.userId %>
+    tasks:
+      - id: task1
+        fn: com.gs.datastore
+        args:
+          datasource: postgres
+          data:
+            where:
+              id: <% parseInt(inputs.params.id) %>
+            data: <%inputs.body%>
+          config:
+            method: Posts.update
+
+      - id: task2
+        fn: com.gs.return
+        args: 'Post successfully updated.'
+    
+  - id: if_unauth_user
+    fn: com.gs.else
+    tasks:
+      - id: return_default
+        fn: com.gs.return
+        args: 'You are not authorised to edit the post. Only the user who created the post can edit it.'

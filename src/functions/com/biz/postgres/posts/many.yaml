@@ -1,0 +1,12 @@
+summary: Fetch all Posts by a specific user
+authn: false
+tasks:
+  - id: postgres_posts_many
+    fn: com.gs.datastore
+    args:
+      datasource: postgres
+      data:
+        where:
+          userId: <% parseInt(inputs.params.userId) %>
+      config:
+        method: Posts.findMany

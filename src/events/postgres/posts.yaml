@@ -1,0 +1,117 @@
+# ONE
+/postgres/posts/:id.http.get:
+  summary: Fetch Posts
+  description: Fetch Posts from database
+  authn: false
+  fn: com.biz.postgres.posts.one
+  params:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    content:
+      application/json:
+        schema:
+          type: object
+
+# CREATE
+/postgres/posts.http.post:
+  summary: Create a new Posts
+  description: Create Posts from database
+  fn: com.biz.postgres.posts.create
+  body:
+    content:
+      application/json:
+        schema:
+          $ref: '#/definitions/postgres/Posts'
+  responses:
+    content:
+      application/json:
+        schema:
+          type: object
+
+# UPDATE
+/postgres/posts/:id.http.put:
+  summary: Update a Posts
+  description: Update Posts from database
+  fn: com.biz.postgres.posts.update
+  body:
+    content:
+      application/json:
+        schema:
+          $ref: '#/definitions/postgres/Posts'
+  params:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    content:
+      application/json:
+        schema:
+          type: object
+
+# DELETE
+/postgres/posts/:id.http.delete:
+  summary: Delete a Posts
+  description: Delete Posts from database
+  fn: com.biz.postgres.posts.delete
+  params:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  body:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            username:
+              type: string
+            password:
+              type: string
+  responses:
+    content:
+      application/json:
+        schema:
+          type: object
+
+# SEARCH
+/postgres/posts/search.http.post:
+  summary: Fetch multiple Posts
+  description: Fetch multiple Posts from database
+  authn: false
+  fn: com.biz.postgres.posts.search
+  body:
+    content:
+      application/json:
+        schema:
+          type: object
+  responses:
+    content:
+      application/json:
+        schema:
+          type: array
+
+# MANY
+/postgres/posts/user/:userId.http.get:
+  summary: Fetch all Posts by a specific user 
+  description: Fetch all Posts related to a particular user from the database
+  authn: false
+  fn: com.biz.postgres.posts.many
+  params:
+    - name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    content:
+      application/json:
+        schema:
+          type: array

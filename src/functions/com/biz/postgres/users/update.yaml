@@ -1,0 +1,13 @@
+summary: Update Users
+authn: false
+tasks:
+  - id: postgres_users_update
+    fn: com.gs.datastore
+    args:
+      datasource: postgres
+      data:
+        where:
+          id: <% parseInt(inputs.params.id) %>
+        data: <% inputs.body %>
+      config:
+        method: Users.update

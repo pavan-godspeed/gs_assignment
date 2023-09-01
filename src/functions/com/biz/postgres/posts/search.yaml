@@ -1,0 +1,12 @@
+summary: Fetch many Posts
+authn: false
+tasks:
+  - id: postgres_posts_search
+    fn: com.gs.datastore
+    args:
+      datasource: postgres
+      data: 
+        include:
+          comments: true
+      config:
+        method: Posts.findMany
